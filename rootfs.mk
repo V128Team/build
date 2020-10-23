@@ -1,4 +1,4 @@
-DEPS    := $(BUILDSCRIPTS)
+DEPS    := $(BUILD)/rootfs.mk $(BUILD)/Makefile
 SOURCES := $(shell find $(ROOTDIR)/distro -type f)
 DEBOS   := $(shell which debos)
 IMAGE   := $(OUT)/vice-embedded.img
@@ -24,4 +24,3 @@ clean::
 	rm -rf $(IMAGE) $(OUT)/vice-embedded.* $(OUT)/debos-artifacts
 
 .PHONY:: rootfs
-.DELETE_ON_ERROR:: $(IMAGE)
