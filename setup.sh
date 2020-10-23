@@ -42,3 +42,8 @@ function j
         *)   cd "${ROOTDIR}/$1" ;;
     esac
 }
+
+function push
+{
+    git push v128 HEAD:refs/heads/master "$@"
+}
