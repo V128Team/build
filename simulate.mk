@@ -13,7 +13,6 @@ simulate: $(OUT)/vice-embedded.img $(EMMC)
 		-usb \
 		-drive file=$(OUT)/vice-embedded.img,if=none,id=stick,format=raw \
 		-device usb-storage,drive=stick \
-		-drive file=$(EMMC),if=ide,format=raw \
 		-vga virtio \
 		-display gtk
 
