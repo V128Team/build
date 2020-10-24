@@ -25,6 +25,7 @@ include $(BUILD)/rootfs.mk
 # Seldom used targets, but necessary for the build
 include $(BUILD)/release.mk
 include $(BUILD)/prereqs.mk
+include $(BUILD)/simulate.mk
 
 all::
 	@echo ==================================================
