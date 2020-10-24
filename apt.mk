@@ -1,8 +1,10 @@
-APT := $(OUT)/apt
+APT      := $(OUT)/apt
+BUILT_PACKAGES := $(shell find $(OUT)/packages/* -maxdepth 1 -type f)
 
-$(APT):
+$(APT): $(BUILT_PACKAGES)
 	mkdir -p $(APT)
-	cp `find $(OUT)/packages/* -maxdepth 1 -type f` $(APT)
+	cp $(BUILT_PACKAGES) $(APT)
+	touch $(APT)
 
 $(OUT)/apt/Packages: $(APT)
 	cd $(APT); apt-ftparchive packages . >Packages
