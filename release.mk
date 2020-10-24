@@ -3,7 +3,6 @@ RELEASE_FILES := \
 	$(OUT)/vice-embedded.img
 
 DEPS := \
-	$(BUILD)/Makefile \
 	$(BUILD)/rootfs.mk \
 	$(BUILD)/release.mk
 
