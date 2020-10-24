@@ -7,20 +7,22 @@ ifeq ($(DEBOS),)
 $(error The debos tool could not be found -- please install and try again)
 endif
 
-$(OUT)/debos-artifacts:
-	mkdir -p $(OUT)/debos-artifacts
+$(OUT)/debos: $(SOURCES)
+	mkdir -p $(OUT)/debos
+	cp -r $(ROOTDIR)/distro/* $(OUT)/debos/
+	cp -r $(OUT)/apt $(OUT)/debos/apt
 
-$(IMAGE): $(SOURCES) $(DEPS) | $(OUT) $(OUT)/debos-artifacts
-	$(DEBOS) \
+$(IMAGE): $(DEPS) | $(OUT) $(OUT)/debos
+	cd $(OUT)/debos && $(DEBOS) \
 		-t image:$(IMAGE) \
-		--artifactdir=$(OUT)/debos-artifacts \
-		distro/vice-embedded.yaml
+		--artifactdir=$(OUT)/debos \
+		$(OUT)/debos/vice-embedded.yaml
 
 all:: rootfs
 
 rootfs: $(IMAGE)
 
 clean::
-	rm -rf $(IMAGE) $(OUT)/vice-embedded.* $(OUT)/debos-artifacts
+	rm -rf $(IMAGE) $(OUT)/vice-embedded.* $(OUT)/debos
 
 .PHONY:: rootfs

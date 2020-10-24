@@ -15,13 +15,24 @@ BUILDSCRIPTS := $(shell find $(ROOTDIR)/build -type f)
 $(OUT):
 	mkdir -p $(OUT)
 
+# Packages here first
+include $(BUILD)/vice.mk
+
+# Build the rootfs
+include $(BUILD)/apt.mk
 include $(BUILD)/rootfs.mk
+
+# Seldom used targets, but necessary for the build
 include $(BUILD)/release.mk
+include $(BUILD)/prereqs.mk
 
 all::
+	@echo ==================================================
+	@echo
+	@echo Build complete!
+	@echo
 
 clean::
 	rmdir $(OUT)
 
 .PHONY:: all clean
-
