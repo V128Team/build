@@ -11,8 +11,9 @@ $(OUT)/debos: $(SOURCES) $(BUILD_PACKAGES) $(OUT)/apt/Packages
 	mkdir -p $(OUT)/debos
 	cp -r $(ROOTDIR)/distro/* $(OUT)/debos/
 	cp -r $(OUT)/apt $(OUT)/debos/apt
+	touch $(OUT)/debos
 
-$(IMAGE): $(DEPS) $(SOURCES) $(OUT)/apt/Packages $(OUT)/debos/vice-embedded.yaml | $(OUT)
+$(IMAGE): $(DEPS) $(SOURCES) $(OUT)/apt/Packages $(OUT)/debos | $(OUT)
 	rm -f $(IMAGE)
 	cd $(OUT)/debos && $(DEBOS) \
 		-t image:$(IMAGE) \
