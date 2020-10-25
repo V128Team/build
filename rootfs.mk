@@ -7,7 +7,7 @@ ifeq ($(DEBOS),)
 $(error The debos tool could not be found -- please install and try again)
 endif
 
-$(OUT)/debos: $(SOURCES) $(OUT)/apt/Packages
+$(OUT)/debos: $(SOURCES) $(BUILD_PACKAGES) $(OUT)/apt/Packages
 	mkdir -p $(OUT)/debos
 	cp -r $(ROOTDIR)/distro/* $(OUT)/debos/
 	cp -r $(OUT)/apt $(OUT)/debos/apt

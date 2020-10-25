@@ -16,7 +16,7 @@ $(OUT):
 	mkdir -p $(OUT)
 
 # Packages here first
-include $(BUILD)/vice.mk
+include $(BUILD)/packages.mk
 
 # Build the rootfs
 include $(BUILD)/apt.mk
