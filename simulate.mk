@@ -4,13 +4,13 @@ simulate: $(OUT)/vice-embedded.img
 	qemu-system-x86_64 \
 		-bios /usr/share/qemu/OVMF.fd \
 		-device usb-storage,drive=stick \
-		-display gtk \
+		-display gtk,gl=on \
 		-drive file=$(OUT)/vice-embedded.img,if=none,id=stick,format=raw \
 		-enable-kvm \
 		-m size=2048 \
 		-machine q35 \
 		-nodefaults \
 		-usb \
-		-vga virtio \
+		-device virtio-vga,virgl=on
 
 .PHONY:: simulate
