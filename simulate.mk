@@ -1,22 +1,16 @@
 EMMC := $(OUT)/simulated-emmc.img
 
-$(EMMC):
-	rm -f $(EMMC)
-	dd if=/dev/zero of=$(EMMC) seek=32G
-
-simulate: $(OUT)/vice-embedded.img $(EMMC)
+simulate: $(OUT)/vice-embedded.img
 	qemu-system-x86_64 \
-		-nodefaults \
+		-bios /usr/share/qemu/OVMF.fd \
+		-device usb-storage,drive=stick \
+		-display gtk \
+		-drive file=$(OUT)/vice-embedded.img,if=none,id=stick,format=raw \
 		-enable-kvm \
 		-m size=2048 \
-		-bios /usr/share/qemu/OVMF.fd \
+		-machine q35 \
+		-nodefaults \
 		-usb \
-		-drive file=$(OUT)/vice-embedded.img,if=none,id=stick,format=raw \
-		-device usb-storage,drive=stick \
 		-vga virtio \
-		-display gtk
-
-reset-hd:
-	rm -f $(EMMC)
 
 .PHONY:: simulate
