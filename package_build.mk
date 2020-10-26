@@ -32,7 +32,7 @@ $(PACKAGE): $(WORKDIR) $(DSCFILE) $(SOURCES) | $(OUT)/packages
 		$(WHALE_DEPS) \
 		whalebuilder/debian:testing \
 		$(PACKAGE_NAME)_$(PKGVER).dsc -- -tc -us -j$(shell nproc)
-	rm -rf $(OUT)/apt
+	rm -rf $(OUT)/apt $(OUT)/debos
 
 $(PACKAGE_NAME): $(PACKAGE) $(SOURCES)
 
