@@ -26,7 +26,7 @@ $(WORKDIR): $(DEPS) $(SOURCES) | $(OUT)/packagework
 $(DSCFILE): $(WORKDIR) $(SOURCES)
 	cd $(WORKDIR) && dpkg-source -b .
 
-$(PACKAGE): $(PACKAGE_DEPS) $(WORKDIR) $(DSCFILE) $(SOURCES) | $(OUT)/packages
+$(PACKAGE): $(WORKDIR) $(DSCFILE) $(SOURCES) | $(OUT)/packages
 	cd $(OUT)/packagework && whalebuilder build \
 		--results $(OUT)/packages \
 		$(WHALE_DEPS) \
