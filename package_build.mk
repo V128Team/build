@@ -1,6 +1,13 @@
 define build_package
 $(eval PACKAGE_NAME := $(1))
 $(eval PACKAGE_ARCH := $(2))
+$(eval PACKAGE_DEPS := $(3))
+
+ifeq ($(PACKAGE_DEPS),)
+$(eval WHALE_DEPS := )
+else
+$(eval WHALE_DEPS := $(foreach pkg,$(3),--deb $(wildcard $(OUT)/packages/$(pkg)*/$(pkg)_*.deb)))
+endif
 
 $(eval DEPS := $(BUILD)/package_build.mk)
 
@@ -17,11 +24,12 @@ $(WORKDIR): $(DEPS) $(SOURCES) | $(OUT)/packagework
 	cp -r $(ROOTDIR)/packages/$(PACKAGE_NAME) $(WORKDIR)
 
 $(DSCFILE): $(WORKDIR) $(SOURCES)
-	cd $(WORKDIR) && dpkg-buildpackage -us --build=source
+	cd $(WORKDIR) && dpkg-source -b .
 
-$(PACKAGE): $(WORKDIR) $(DSCFILE) $(SOURCES) | $(OUT)/packages
+$(PACKAGE): $(PACKAGE_DEPS) $(WORKDIR) $(DSCFILE) $(SOURCES) | $(OUT)/packages
 	cd $(OUT)/packagework && whalebuilder build \
 		--results $(OUT)/packages \
+		$(WHALE_DEPS) \
 		whalebuilder/debian:testing \
 		$(PACKAGE_NAME)_$(PKGVER).dsc -- -tc -us -j$(shell nproc)
 	rm -rf $(OUT)/apt
