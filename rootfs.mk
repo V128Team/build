@@ -13,7 +13,7 @@ $(OUT)/debos: $(SOURCES) $(BUILD_PACKAGES) $(OUT)/apt/Packages
 	cp -r $(OUT)/apt $(OUT)/debos/apt
 	touch $(OUT)/debos
 
-$(IMAGE): $(DEPS) $(SOURCES) $(OUT)/apt/Packages $(OUT)/debos | $(OUT)
+$(IMAGE): $(DEPS) $(SOURCES) $(OUT)/apt/Packages $(OUT)/debos | $(OUT) cleanimage
 	rm -f $(IMAGE)
 	cd $(OUT)/debos && $(DEBOS) \
 		-t image:$(IMAGE) \
@@ -22,9 +22,12 @@ $(IMAGE): $(DEPS) $(SOURCES) $(OUT)/apt/Packages $(OUT)/debos | $(OUT)
 
 all:: rootfs
 
-rootfs: $(IMAGE)
+cleanimage:
+	rm -f $(IMAGE)
+
+rootfs: $(IMAGE) | cleanimage
 
 clean::
 	rm -rf $(IMAGE) $(OUT)/vice-embedded.* $(OUT)/debos
 
-.PHONY:: rootfs
+.PHONY:: rootfs cleanimage
