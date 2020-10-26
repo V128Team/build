@@ -1,6 +1,6 @@
 EMMC := $(OUT)/simulated-emmc.img
 
-simulate: $(OUT)/vice-embedded.img
+simulate:
 	qemu-system-x86_64 \
 		-bios /usr/share/qemu/OVMF.fd \
 		-device usb-storage,drive=stick \
