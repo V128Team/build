@@ -11,6 +11,7 @@ simulate:
 		-machine q35 \
 		-nodefaults \
 		-usb \
-		-device virtio-vga,virgl=on
+		-device virtio-vga,virgl=on \
+		-device usb-audio
 
 .PHONY:: simulate
