@@ -1,5 +1,3 @@
-EMMC := $(OUT)/simulated-emmc.img
-
 simulate:
 	qemu-system-x86_64 \
 		-bios /usr/share/qemu/OVMF.fd \
@@ -12,6 +10,27 @@ simulate:
 		-nodefaults \
 		-usb \
 		-device virtio-vga,virgl=on \
-		-device usb-audio
+		-device usb-audio \
+		-nic user,model=virtio-net-pci
 
-.PHONY:: simulate
+mount:
+	sudo kpartx -as $(OUT)/vice-embedded.img
+	mkdir -p $(OUT)/mount
+	sudo mount /dev/mapper/loop0p2 $(OUT)/mount
+
+extract-logs: mount
+	rm -rf $(OUT)/logs
+	mkdir -p $(OUT)/logs
+	rsync -r $(OUT)/mount/var/log/v128/* $(OUT)/logs
+	sudo umount /dev/mapper/loop0p2
+	sudo kpartx -ds $(OUT)/vice-embedded.img
+
+unmount:
+	sudo umount /dev/mapper/loop0p2
+	sudo kpartx -ds $(OUT)/vice-embedded.img
+
+clean::
+	rm -rf $(OUT)/mount
+	rm -rf $(OUT)/logs
+
+.PHONY:: simulate extract-logs mount unmount
