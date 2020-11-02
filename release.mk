@@ -22,10 +22,13 @@ $(RELEASEDIR): $(RELEASE_FILES) $(DEPS)
 	mkdir -p $(RELEASEDIR)
 	cp $(RELEASE_FILES) $(RELEASEDIR)
 
-$(OUT)/$(RELEASE_ROOT).zip: $(RELEASEDIR)
+$(RELEASEDIR)/commits.txt:
+	repo forall -c 'git log -n1 --pretty=format:"$$REPO_PROJECT %H"; echo' >$(RELEASEDIR)/commits.txt
+
+$(OUT)/$(RELEASE_ROOT).zip: $(RELEASEDIR) $(RELEASEDIR)/commits.txt
 	cd $(OUT); zip -9r $(RELEASE_ROOT).zip $(notdir $(RELEASEDIR))
 
-$(OUT)/$(RELEASE_ROOT).tar.bz2: $(RELEASEDIR)
+$(OUT)/$(RELEASE_ROOT).tar.bz2: $(RELEASEDIR) $(RELEASEDIR)/commits.txt
 	tar -C $(OUT) -jcf $(OUT)/$(RELEASE_ROOT).tar.bz2 $(notdir $(RELEASEDIR))
 
 $(OUT)/$(RELEASE_ROOT)%.sha256: $(OUT)/$(RELEASE_ROOT)%
