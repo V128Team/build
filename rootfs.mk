@@ -18,7 +18,7 @@ $(IMAGE): $(DEPS) $(SOURCES) $(OUT)/apt/Packages $(OUT)/debos | $(OUT) cleanimag
 	cd $(OUT)/debos && $(DEBOS) \
 		-t image:$(IMAGE) \
 		--artifactdir=$(OUT)/debos \
-		$(OUT)/debos/vice-embedded.yaml
+		$(OUT)/debos/vice-embedded-pi.yaml
 
 all:: rootfs
 
