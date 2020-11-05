@@ -16,6 +16,10 @@ $(OUT)/debos: $(SOURCES) $(BUILD_PACKAGES) $(OUT)/apt/Packages
 $(IMAGE): $(DEPS) $(SOURCES) $(OUT)/apt/Packages $(OUT)/debos | $(OUT) cleanimage
 	rm -f $(IMAGE)
 	cd $(OUT)/debos && $(DEBOS) \
+		--debug-shell \
+		--show-boot \
+		--verbose \
+		--memory=4096MB \
 		-t image:$(IMAGE) \
 		--artifactdir=$(OUT)/debos \
 		$(OUT)/debos/vice-embedded-pi.yaml
