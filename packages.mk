@@ -10,6 +10,7 @@ $(eval $(call build_package,vice,amd64))
 $(eval $(call build_package,plymouth-v128-theme,all))
 $(eval $(call build_package,v128-shell,amd64))
 $(eval $(call build_package,pi4-firmware,all))
+$(eval $(call build_package,rpi-eeprom,all))
 
 clean::
 	rm -rf $(OUT)/packages
