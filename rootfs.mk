@@ -22,7 +22,7 @@ $(IMAGE): $(DEPS) $(SOURCES) $(OUT)/apt/Packages $(OUT)/debos | $(OUT) cleanimag
 		--memory=4096MB \
 		-t image:$(IMAGE) \
 		--artifactdir=$(OUT)/debos \
-		$(OUT)/debos/vice-embedded-pi.yaml
+		$(OUT)/debos/$(PLATFORM).yaml
 
 all:: rootfs
 

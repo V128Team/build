@@ -47,3 +47,26 @@ function push
 {
     git push v128 HEAD:refs/heads/master "$@"
 }
+
+function set-platform
+{
+    case "$1" in
+        udoo)
+            export PLATFORM=udoo
+            ;;
+
+        pi)
+            export PLATFORM=pi
+            ;;
+
+        *)
+            echo "Unknown platform [$1]."
+            echo "Valid platforms are: udoo, pi"
+            return 1
+            ;;
+    esac
+
+    echo "PLATFORM set to [$PLATFORM]"
+}
+
+set-platform pi

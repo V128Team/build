@@ -3,10 +3,11 @@ BUILD        := $(ROOTDIR)/build
 OUT          := $(ROOTDIR)/out
 
 $(warning ==================================================)
-$(warning ROOTDIR = [$(ROOTDIR)])
-$(warning BUILD   = [$(BUILD)])
-$(warning OUT     = [$(OUT)])
-$(warning ==================================================)
+$(warning PLATFORM = [$(PLATFORM)])
+$(warning ROOTDIR  = [$(ROOTDIR)])
+$(warning BUILD    = [$(BUILD)])
+$(warning OUT      = [$(OUT)])
+$(warning =================================================)
 
 BUILDSCRIPTS := $(shell find $(ROOTDIR)/build -type f)
 

@@ -1,3 +1,11 @@
+ifeq ($(PLATFORM),udoo)
+SIMULATOR := qemu-system-x86_64
+endif
+
+ifeq ($(SIMULATOR),)
+$(error No simulator for platform [$(PLATFORM)])
+endif
+
 simulate:
 	qemu-system-x86_64 \
 		-bios /usr/share/qemu/OVMF.fd \
