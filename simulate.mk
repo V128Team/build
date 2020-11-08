@@ -10,7 +10,7 @@ simulate:
 	qemu-system-x86_64 \
 		-bios /usr/share/qemu/OVMF.fd \
 		-device usb-storage,drive=stick \
-		-display gtk,gl=on \
+		-display gtk \
 		-drive file=$(OUT)/vice-embedded.img,if=none,id=stick,format=raw \
 		-enable-kvm \
 		-m size=2048 \
@@ -33,6 +33,7 @@ extract-logs: mount
 	sudo umount /dev/mapper/loop0p2
 	sudo kpartx -ds $(OUT)/vice-embedded.img
 
+umount: unmount
 unmount:
 	sudo umount /dev/mapper/loop0p2
 	sudo kpartx -ds $(OUT)/vice-embedded.img
@@ -41,4 +42,4 @@ clean::
 	rm -rf $(OUT)/mount
 	rm -rf $(OUT)/logs
 
-.PHONY:: simulate extract-logs mount unmount
+.PHONY:: simulate extract-logs mount unmount umount
