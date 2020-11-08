@@ -7,14 +7,13 @@ ifeq ($(DEBOS),)
 $(error The debos tool could not be found -- please install and try again)
 endif
 
-$(OUT)/debos: $(SOURCES) $(BUILD_PACKAGES) $(OUT)/apt/Packages
+$(OUT)/debos: $(SOURCES) $(OUT)/apt/Packages
 	mkdir -p $(OUT)/debos
 	cp -r $(ROOTDIR)/distro/* $(OUT)/debos/
 	cp -r $(OUT)/apt $(OUT)/debos/apt
 	touch $(OUT)/debos
 
-$(IMAGE): $(DEPS) $(SOURCES) $(OUT)/apt/Packages $(OUT)/debos | $(OUT) cleanimage
-	rm -f $(IMAGE)
+$(IMAGE): $(DEPS) $(SOURCES) $(OUT)/apt/Packages | $(OUT) $(OUT)/debos
 	cd $(OUT)/debos && $(DEBOS) \
 		--debug-shell \
 		--show-boot \
@@ -28,8 +27,9 @@ all:: rootfs
 
 cleanimage:
 	rm -f $(IMAGE)
+	rm -rf $(OUT)/debos
 
-rootfs: $(IMAGE) | cleanimage
+rootfs: cleanimage $(IMAGE)
 
 clean::
 	rm -rf $(IMAGE) $(OUT)/vice-embedded.* $(OUT)/debos
