@@ -1,4 +1,4 @@
-PACKAGES := devscripts equivs fakeroot whalebuilder qemu-system-x86 ovmf
+PACKAGES := devscripts equivs fakeroot qemu-system-x86 ovmf debspawn
 
 prereqs:
 	sudo apt-get install $(PACKAGES)
