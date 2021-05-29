@@ -2,11 +2,12 @@ ifeq ($(PLATFORM),udoo)
 SIMULATOR := qemu-system-x86_64
 endif
 
-ifeq ($(SIMULATOR),)
-$(error No simulator for platform [$(PLATFORM)])
-endif
-
 simulate:
+	if [[ -z $(SIMULATOR) ]]; then \
+		@echo No simulator for platform [$(PLATFORM)] >/dev/stderr; \
+		exit 1; \
+	fi
+
 	qemu-system-x86_64 \
 		-bios /usr/share/qemu/OVMF.fd \
 		-device usb-storage,drive=stick \
