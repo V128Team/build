@@ -40,7 +40,7 @@ $(eval PKGVER    := $(shell dpkg-parsechangelog -l $(CHANGELOG) -S Version))
 
 $(eval WORKDIR := $(OUT)/packagework/$(PACKAGE_NAME)-$(PKGVER))
 $(eval DSCFILE := $(OUT)/packagework/$(PACKAGE_NAME)_$(PKGVER).dsc)
-$(eval PACKAGE := $(OUT)/packages/$(PACKAGE_NAME)_$(PKGVER)/$(PACKAGE_NAME)_$(PKGVER)_$(PACKAGE_ARCH).deb)
+$(eval PACKAGE := $(OUT)/packages/$(PACKAGE_NAME)_$(PKGVER)_$(PACKAGE_ARCH).deb)
 
 $(eval PACKAGE_CONTAINER := $(OUT)/debspawn/roots/$(DEBIAN_DISTRO)-$(PACKAGE_ARCH).tar.zst)
 
