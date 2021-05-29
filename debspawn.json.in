@@ -1,0 +1,8 @@
+{
+    "OSRootsDir": "@OUT@/debspawn/roots",
+    "ResultsDir": "@OUT@/packages",
+    "APTCacheDir": "@OUT@/debspawn/aptcache",
+    "InjectedPkgsDir": "@OUT@/packages",
+    "TempDir": "@OUT@/debspawn/temp",
+    "AllowUnsafePermissions": false
+}
