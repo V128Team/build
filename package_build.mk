@@ -10,11 +10,11 @@ $(OUT)/debspawn/debspawn.json: $(ROOTDIR)/build/debspawn.json.in | $(OUT)/debspa
 	    |awk '/Dir/ { print $$2 }' \
         |xargs mkdir -p
 
-$(OUT)/debspawn/roots/$(DEBIAN_DISTRO)-%.tar.zst: | $(OUT)/packagework $(OUT)/debspawn/debspawn.json
+$(OUT)/debspawn/roots/$(DEBIAN_DISTRO)-armhf.tar.zst: | $(OUT)/packagework $(OUT)/debspawn/debspawn.json
 	debspawn \
 	  -c $(OUT)/packagework/debspawn.json \
       create \
-      --arch=$(shell echo $@ |sed -e 's/^.*-//' -e 's/\..*$$//') \
+      --arch=armhf \
       $(DEBIAN_DISTRO)
 
 define build_package
@@ -22,9 +22,8 @@ $(eval PACKAGE_NAME := $(1))
 $(eval PACKAGE_ARCH := $(2))
 $(eval PACKAGE_DEPS := $(3))
 
-ifeq ($(PACKAGE_ARCH),all)
-$(eval PACKAGE_ARCH := armhf)
-endif
+# Ensure we skip the "all" arch and force it to armhf
+$(eval DEBSPAWN_ARCH := $(if $(filter all,$(PACKAGE_ARCH)),armhf,$(PACKAGE_ARCH)))
 
 ifeq ($(PACKAGE_DEPS),)
 $(eval WHALE_DEPS := )
@@ -32,7 +31,7 @@ else
 $(eval WHALE_DEPS := $(foreach pkg,$(3),--deb $(wildcard $(OUT)/packages/$(pkg)*/$(pkg)_*.deb)))
 endif
 
-$(eval DEPS := $(BUILD)/package_build.mk)
+$(eval DEPS := )
 
 $(eval SOURCES   := $(shell find $(ROOTDIR)/packages/$(PACKAGE_NAME) -type f))
 $(eval CHANGELOG := $(ROOTDIR)/packages/$(PACKAGE_NAME)/debian/changelog)
@@ -42,7 +41,7 @@ $(eval WORKDIR := $(OUT)/packagework/$(PACKAGE_NAME)-$(PKGVER))
 $(eval DSCFILE := $(OUT)/packagework/$(PACKAGE_NAME)_$(PKGVER).dsc)
 $(eval PACKAGE := $(OUT)/packages/$(PACKAGE_NAME)_$(PKGVER)_$(PACKAGE_ARCH).deb)
 
-$(eval PACKAGE_CONTAINER := $(OUT)/debspawn/roots/$(DEBIAN_DISTRO)-$(PACKAGE_ARCH).tar.zst)
+$(eval PACKAGE_CONTAINER := $(OUT)/debspawn/roots/$(DEBIAN_DISTRO)-$(DEBSPAWN_ARCH).tar.zst)
 
 $(WORKDIR): $(DEPS) $(SOURCES) | $(OUT)/packagework
 	rm -rf $(WORKDIR)
@@ -55,7 +54,8 @@ $(PACKAGE): $(WORKDIR) $(DSCFILE) $(SOURCES) $(PACKAGE_CONTAINER) | $(OUT)/packa
 	cd $(WORKDIR); \
       debspawn -c $(OUT)/packagework/debspawn.json \
       build \
-	  --arch $(PACKAGE_ARCH) \
+      --buildflags="-J`nproc`" \
+      --arch $(DEBSPAWN_ARCH) \
       --lintian \
       $(DEBIAN_DISTRO) $(DSCFILE)
 
