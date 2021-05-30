@@ -27,7 +27,9 @@ function getrootdir
         fi
     fi
 }
+
 export ROOTDIR="$(getrootdir)"
+export OUT="${ROOTDIR}/out"
 
 function m
 {
