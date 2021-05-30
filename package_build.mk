@@ -56,7 +56,6 @@ $(PACKAGE): $(WORKDIR) $(DSCFILE) $(SOURCES) $(PACKAGE_CONTAINER) | $(OUT)/packa
       build \
       --buildflags="-J`nproc`" \
       --arch $(DEBSPAWN_ARCH) \
-      --lintian \
       $(DEBIAN_DISTRO) $(DSCFILE)
 
 $(PACKAGE_NAME): $(PACKAGE) $(SOURCES)
